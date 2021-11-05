@@ -1,0 +1,68 @@
+body {
+    max-height: 100vh;
+    font-family: sans-serif;
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+.grid {
+    width: 420px;
+    height: 420px;
+    border: 1px solid black;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.grid > * {
+    box-sizing: border-box;
+    width: 15px;
+    height: 15px;
+    border: 1px solid green; /*delete or change color and opacity*/
+}
+
+.pac-dot {
+    border: 5px solid #fff;
+    background: greenyellow;
+}
+
+.wall {
+    background: blue;
+}
+
+.power-pallets {
+    background: green;
+    border-radius: 7.5px;
+}
+
+.ghost-lair {
+    background-color: #fff;
+}
+
+.ghost {
+    border: 1px solid black;
+    border-radius: 7.5px;
+}
+
+.pac-man {
+    background: yellow;
+    border: 1px solid black;
+    border-radius: 7.5px;
+}
+
+.red {
+    background: red;
+}
+
+.blue {
+    background-color: aqua;
+}
+
+.pink {
+    background-color: palevioletred;
+}
+
+.yellow {
+    background-color: yellow;
+}
