@@ -40,9 +40,29 @@ h1 {
     background-color: #fff;
 }
 
+.red {
+    background: red;
+}
+
+.blue {
+    background: aqua;
+}
+
+.pink {
+    background: palevioletred;
+}
+
+.yellow {
+    background: yellow;
+}
+
 .ghost {
     border: 1px solid black;
     border-radius: 7.5px;
+}
+
+.scared-ghost {
+    background: blue;
 }
 
 .pac-man {
@@ -51,18 +71,40 @@ h1 {
     border-radius: 7.5px;
 }
 
-.red {
-    background: red;
+
+
+
+
+img {
+    width: 100%;
 }
 
-.blue {
-    background-color: aqua;
+.btn-container {
+    width: 70%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 33.333%);
+    grid-template-rows: repeat(3, 33.333%);
 }
 
-.pink {
-    background-color: palevioletred;
+.up {
+    grid-column: 2 / 2;
+    grid-row: 1 / 1;
+    transform: rotate(-90deg)
 }
-
-.yellow {
-    background-color: yellow;
+.left {
+    grid-column: 1 / 1;
+    grid-row: 2 / 2;
+    transform: rotate(-180deg)
+}
+/*down*/
+.right {
+    grid-column: 2 / 2;
+    grid-row: 3 / 3;
+    transform: rotate(90deg);
+}
+/*right*/
+.down {
+    grid-row: 2 / 2;
+    grid-column: 3 / 3;
 }

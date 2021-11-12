@@ -3,7 +3,7 @@ const scoreEl = document.getElementById('score');
 const width = 28;
 let squares = [];
 let score = 0;
-
+//--------------fix at line 214------------\\
 const layout = [
     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
     1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,
@@ -65,10 +65,6 @@ let pacManPosition = 490;
 squares[pacManPosition].classList.add('pac-man');
 //
 let myInt = '';
-let pressedRight = 0;
-let pressedLeft = 0;
-let pressedUp = 0;
-let pressedDown = 0;
 //
 
 function move(e) {
@@ -82,13 +78,13 @@ function move(e) {
             myInt = setInterval( function () {
                 //console.log('up')
                 if (!squares[pacManPosition - width].classList.contains('wall')) {
+                    powerPelletsEaten();
                     squares[pacManPosition].classList.remove('pac-man');
                     pacManPosition -= width;
                     squares[pacManPosition].classList.add('pac-man');
                     pacdotsEaten();
-                    powerPelletsEaten();
                 }
-            }, 400)
+            }, 200)
         break;
 
         case 'ArrowRight':
@@ -96,13 +92,13 @@ function move(e) {
             myInt = setInterval( function () {
                 //console.log('right')
                 if (!squares[pacManPosition + 1].classList.contains('wall')) {
+                    powerPelletsEaten();
                     squares[pacManPosition].classList.remove('pac-man');
                     pacManPosition++;
                     squares[pacManPosition].classList.add('pac-man');
                     pacdotsEaten();
-                    powerPelletsEaten();
                 }
-            }, 400)
+            }, 200)
             
         break;
 
@@ -110,30 +106,30 @@ function move(e) {
             console.log('DOWN');
             clearInterval(myInt);
             myInt = setInterval( function () {
-                //console.log('up')
+                //console.log('down')
                 if (!squares[pacManPosition + width].classList.contains('wall')) {
+                    powerPelletsEaten();
                     squares[pacManPosition].classList.remove('pac-man');
                     pacManPosition += width;
                     squares[pacManPosition].classList.add('pac-man');
                     pacdotsEaten();
-                    powerPelletsEaten();
                 }
-            }, 400)
+            }, 200)
 
         break;
 
         case 'ArrowLeft':
             clearInterval(myInt);
             myInt = setInterval( function () {
-                //console.log('up')
+                //console.log('left')
                 if (!squares[pacManPosition - 1].classList.contains('wall')) {
+                    powerPelletsEaten();
                     squares[pacManPosition].classList.remove('pac-man');
                     pacManPosition--;
                     squares[pacManPosition].classList.add('pac-man');
                     pacdotsEaten();
-                    powerPelletsEaten();
                 }
-            }, 400)
+            }, 200)
         break;
     }
     squares[pacManPosition].classList.add('pac-man');
@@ -150,10 +146,10 @@ function pacdotsEaten() {
 
 function powerPelletsEaten() {
     if (squares[pacManPosition].classList.contains('power-pallets')) {
-        squares[pacManPosition].classList.remove('power-pellets');
+        squares[pacManPosition].classList.remove('power-pallets');
         score += 20;
         scoreEl.textContent = score;
-        //here change the ghost color of the ghosts and enable pacMan to eat them
+        ghosts.forEach(ghost => ghost.isScared = true)
     }
 }
 
@@ -185,9 +181,10 @@ const ghosts = [
 ghosts.forEach( (ghost) => {
     squares[ghost.position].classList.add(ghost.name);
     squares[ghost.position].classList.add('ghost');
+    //squares[ghost.position].classList.add('scared-ghost');
 })
 
-//ghosts.forEach(ghost => moveGhost(ghost))
+ghosts.forEach(ghost => moveGhost(ghost))
 
 function moveGhost(ghost) {
     const allDirections = [-1, +1, -width, +width];
@@ -202,7 +199,7 @@ function moveGhost(ghost) {
         ) {
             //remove the ghost from the old position
             squares[ghost.position].classList.remove(ghost.name)
-            squares[ghost.position].classList.remove('ghost')
+            squares[ghost.position].classList.remove('ghost', 'scared-ghost')
             //update the ghost position
             ghost.position += direction;
             //add the ghost to the grid
@@ -211,100 +208,18 @@ function moveGhost(ghost) {
         } else {
             direction = allDirections[Math.floor(Math.random() * allDirections.length)]
         }
+        //check if the ghost is scared
+        if (ghost.isScared) {
+            squares[ghost.position].classList.add('scared-ghost');
+        }
+
+        if (squares[pacManPosition].classList.contains('scared-ghost')) {
+            console.log('pacman ate the ghost');
+            squares[ghost.position].classList.remove(ghost.name);
+            squares[ghost.position].classList.remove('ghost', 'scared-ghost');
+            ghost.isScared = false;
+            ghost.position = ghost.startPosition;
+            squares[ghost.position].classList.add(ghost.name, 'ghost');
+        }
     }, ghost.speed)
 }
-
-/*
-
-    switch (e.key) {
-        case 'ArrowUp':
-            if (!squares[pacManPosition - width].classList.contains('wall')) {
-                pacManPosition -= width;
-            }
-        break;
-
-        case 'ArrowRight':
-            if (!squares[pacManPosition + 1].classList.contains('wall')) {
-                pacManPosition++;
-            }
-        break;
-
-        case 'ArrowDown':
-            console.log('DOWN');
-
-            if (!squares[pacManPosition + width].classList.contains('wall')) {
-                pacManPosition += width;
-            }
-
-        break;
-
-        case 'ArrowLeft':
-            if (!squares[pacManPosition - 1].classList.contains('wall')) {
-                pacManPosition--;
-            }
-        break;
-    }
-
-
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-class ghost {
-    constructor(name, startPosition, speed) {
-        this.name = name;
-        this.startPosition = startPosition;
-        this.position = startPosition;
-        this.speed = speed;
-        this.isScared = false;
-    }
-}
-
-const ghosts = [
-    new ghost ('red', 348, 250),
-    new ghost ('blue', 349, 250),
-    new ghost ('pink', 350, 250),
-    new ghost ('yellow', 351, 250)
-]
-
-ghosts.forEach( (ghost) => {
-    squares[ghost.position].classList.add(ghost.name);
-    squares[ghost.position].classList.add('ghost');
-})
-
-function moveGhost(ghost) {
-    let random = Math.floor( Math.random() * 4) + 1;
-    const allDirections = [-1, +1, -width, +width];
-    let direction = allDirections[random];
-
-    //
-    setInterval( () => {
-        if (!squares[ghost.position + direction].classList.contains('wall')) {
-            //remove the ghost from the old position
-            squares[ghost.position].classList.remove(ghost.name)
-            squares[ghost.position].classList.remove('ghost')
-            //update the ghost position
-            squares[ghost.position] += direction;
-            //add the ghost to the grid
-            squares[ghost.position].classList.add(ghost.name);
-            squares[ghost.position].classList.add('ghost');
-        } else {
-            direction = allDirections[Math.floor(Math.random() * allDirections.length)]
-        }
-    }, 2500)
-}
-
-ghosts.forEach(ghost => moveGhost(ghost))
-*/
